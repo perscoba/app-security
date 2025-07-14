@@ -22,12 +22,13 @@ jobs:
         run: |
           services="assets cart catalog checkout orders ui"
           for service in $services; do
-            image="perscoba/appsec-revive-${service}:latest"
+            image="***/appsec-revive-${service}:latest"
             echo "🔧 Building $service"
-            docker build -t $image ./$service
+            docker build -t $image ./src/$service
             echo "🚀 Pushing $image"
             docker push $image
           done
+
 
   security-scans:
     runs-on: ubuntu-latest
