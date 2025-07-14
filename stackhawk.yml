@@ -1,19 +1,14 @@
-# -- stackhawk configuration for app-ngix --
+# -- stackhawk configuration for appsec --
 app:
   # -- An applicationId obtained from the StackHawk platform. --
-  applicationId: 8ae367b4-95f7-42af-9d7f-cb3b29debf50 # (required)
+  applicationId: e07bbaad-77cb-40cd-a7b2-78c5af7e1cd0 # (required)
   # -- The environment for the applicationId defined in the StackHawk platform. --
   env: Development # (required)
   # -- The url of your application to scan --
-  host: http://localhost:8080 # (required)
+  host: https://localhost:8080 # (required)
 
 
 # -- Customized Configuration for GraphQL/SOAP/OpenAPI, add here --
-  # openApiConf:
-  #   path: /swagger.json # OR...
-#       filePath: openApi.json
-  # autoPolicy: true
-  # autoInputVectors: true
   # Configuration Docs: https://docs.stackhawk.com/hawkscan/configuration/
 
 # -- If Authenticated Scanning is needed, add here --
