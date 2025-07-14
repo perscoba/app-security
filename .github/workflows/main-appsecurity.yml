@@ -70,22 +70,20 @@ jobs:
     needs: docker-build-push
 
     steps:
-      - name: Run Nginx (example app for DAST scan)
-        run: docker run --rm --detach --publish 8080:80 --name nginx_test nginx
+      - name: Build and start UI app with Docker Compose
+        run: docker-compose up -d --build
 
-      - name: Wait for service to be ready
+      - name: Wait for the app to be ready
         run: |
-          for i in {1..10}; do
-            if curl -sSf http://localhost:8080 > /dev/null; then
-              echo "Service is up"
-              break
-            else
-              echo "Waiting for service..."
-              sleep 3
-            fi
+          echo "Waiting for http://localhost:9090 to be ready..."
+          for i in {1..30}; do
+            curl -sSf http://localhost:9090 && break
+            echo "Still waiting... ($i)"
+            sleep 5
           done
 
-      - name: Run HawkScan (DAST)
+      - name: Run HawkScan
         uses: stackhawk/hawkscan-action@v2
         with:
           apiKey: ${{ secrets.HAWK_API_KEY }}
+        
