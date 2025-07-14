@@ -5,21 +5,31 @@ permissions:
   security-events: write
   actions: read
   contents: read
+jobs:
+  docker-build-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build and push images
+        run: |
+          services="assets cart catalog checkout orders ui"
+          for service in $services; do
+            image="perscoba/appsec-revive-${service}:latest"
+            echo "🔧 Building $service"
+            docker build -t $image ./$service
+            echo "🚀 Pushing $image"
+            docker push $image
+          done
 
 jobs:
   security:
     runs-on: ubuntu-latest
-    
-    # steps:
-    #   - uses: actions/checkout@master
-      # - name: Run Snyk to check for vulnerabilities
-      #   uses: snyk/actions/python@master
-      #   with:
-      #      command: code test --all-projects
-      #   env:
-      #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -44,18 +54,6 @@ jobs:
         with:
           sarif_file: snyk.sarif
 
-      #  # ---- STACKHAWK ----
-      # - name: Install StackHawk CLI
-      #   run: |
-      #     curl -sSL https://download.stackhawk.com/cli/install.sh | sh
-      #     sudo mv ./bin/hawk /usr/local/bin/hawk
-  
-      # - name: Run StackHawk Scan
-      #   run: hawk scan --failOnHigh=true
-      #   env:
-      #     HAWK_API_KEY: ${{ secrets.HAWK_API_KEY }}
-      #     CI: true
-      
       - name: Run Nginx
         run: docker run --rm --detach --publish 8080:80 --name nginx_test nginx
       - name: Run HawkScan
