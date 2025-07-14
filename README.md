@@ -1,6 +1,29 @@
 # DEVOPS EASY LEARNING  REVIVE PROJECT
 
 
+app:
+  name: Revive API
+  host: http://localhost:8080
+  openApiConf:
+    filePath: ./openapi.yaml
+
+autoLogin:
+  type: form
+  url: /login
+  usernameField: username
+  passwordField: password
+  username: admin
+  password: secret123
+  success:
+    type: contains
+    value: dashboard
+
+env: dev
+
+reporting:
+  slack:
+    channel: "#security-alerts"
+    enabled: true
 
 
 
