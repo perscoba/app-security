@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  ui:
+    build:
+      context: ./src/ui
+      dockerfile: Dockerfile
+    ports:
+      - "9090:8080"   # maps host:container
+    restart: unless-stopped
+
