@@ -22,12 +22,19 @@ jobs:
         run: |
           services="assets cart catalog checkout orders ui"
           for service in $services; do
-            image="***/appsec-revive-${service}:latest"
-            echo "🔧 Building $service"
-            docker build -t $image ./src/$service
-            echo "🚀 Pushing $image"
-            docker push $image
+            path="./src/$service"
+            if [ -d "$path" ]; then
+              image="perscoba/appsec-revive-${service}:latest"
+              echo "🔧 Building $service at $path"
+              docker build -t "$image" "$path"
+              echo "🚀 Pushing $image"
+              docker push "$image"
+            else
+              echo "⚠️ Skipping $service – directory $path not found"
+            fi
           done
+            
+
 
 
   security-scans:
