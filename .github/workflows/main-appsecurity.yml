@@ -2,8 +2,10 @@ name: Example workflow for app security SAST, SCA, IAST, DAST
 
 on: [push, pull_request]
 permissions:
-  contents: read
   security-events: write
+  actions: read
+  contents: read
+
 jobs:
   security:
     runs-on: ubuntu-latest
