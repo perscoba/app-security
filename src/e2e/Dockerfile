@@ -1,4 +1,4 @@
-FROM node:16-buster
+FROM node:16.20.1-bookworm-slim
 
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" \
