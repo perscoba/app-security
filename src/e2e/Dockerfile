@@ -1,4 +1,4 @@
-FROM node:24.4.0-bookworm-slim
+FROM node:24.4.0-alpine3.21
 
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" \
